@@ -54,17 +54,17 @@ public class Controller extends WindowController
 		TextItem welcome = new TextItem("QUAKE", "null", welcomeSize,
 				TITLE_OFFSET_X,
 				TITLE_OFFSET_Y, 
-				"SHAKER", 150, Font.MONOSPACED,
+				"SHAKER", 150, 
 				canvas);
 		
 		displayedTexts.add(welcome);
 		
 		TextItem threat = new TextItem("Can you survive a major earthquake?", "null", 32,
-				190, 300, Font.MONOSPACED, canvas);
+				190, 300, canvas);
 		displayedTexts.add(threat);
 
 		TextItem startMsg = new TextItem("Click any button to start.","null", 32, 275, 400,
-				"FADER", 75 , Font.DIALOG_INPUT, canvas);
+				"FADER", 75 , canvas);
 		displayedTexts.add(startMsg);
 
 		//init story manager

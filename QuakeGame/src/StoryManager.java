@@ -42,8 +42,10 @@ public class StoryManager {
 		 //first ever choice.
 		 if(level.equals("1")){
 			//create the actual text items here  
-			texts.add(new TextItem("What a lovely spring day at the University of \n " + 
-					"California, San Diego. Or, it would be a nice day, if you weren't stuck inside studying. So boring, I am sorry. What are you working on?", "null", 
+			texts.add(new TextItem(new String[]{"What a lovely spring day at the University of \n ",  
+					"California, San Diego. Or, it would be a nice day, ",
+					"if you weren't stuck inside studying.",
+					"So boring, I am sorry. What are you working on?"}, "null", 
 					bigSize, 20, 20, canvas));
 			
 			texts.add(new TextItem("A) Choice 1.", "2A",

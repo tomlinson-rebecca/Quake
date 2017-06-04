@@ -8,10 +8,12 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.util.ArrayList;
 
 import objectdraw.DrawingCanvas;
 import objectdraw.WindowController;
-
+//TODO: Make arrayList of texts, even for sinle text cases, so the multi-lined texts
+//can change color at once. Put everythin in this oen class.
 /*
  * Canvas will be responsible for listening for key stuff. When key stuff happens,
  * diff text scenarios will be displayed.
@@ -33,20 +35,20 @@ public class TextItem extends ActiveObject {
 	int colorLevel = 255; //starts at white
 	int colorChanger = 10;
 	
-	int x;
-	int y; 
 	int size;
-	Text text;
+	//Text text;
 	String words;
-	String font;
+	String font = Font.MONOSPACED;
 	
 	boolean shouldRun = true;
 	String style = "NONE"; //SHAKER for a shaking text, FADER for a fading text
 	String shakingObject = "SHAKER";
 	String fadingObject = "FADER";
 	
+	ArrayList<Text> texts = new ArrayList<Text>(); //used to animate all the lines at once
+	//String[] texts;
 	/**
-	 *  
+	 * Fully animated, font specified 
 	 * @param words Text to be displayed
 	 * @param size Font size
 	 * @param x position of corner?
@@ -55,18 +57,29 @@ public class TextItem extends ActiveObject {
 	 * @param aniSpeed animation speed 
 	 * @param canvas
 	 */
-	public TextItem(String words, String id, int size, int x, int y,
-			String aniStyle, int aniSpeed, String font, DrawingCanvas canvas){
+	public TextItem(String[] words, String id, int size, int x, int y,
+			String aniStyle, int aniSpeed, DrawingCanvas canvas){
 		
-		this.x = x;
-		this.y = y;
+		int start_x = x;
+		int start_y = y;
 		this.size = size;
+		Text temp;
 		
-		this.words = words;
-		this.font = font;
+		//put each text in texts
+		for(String word: words){
+			temp = new Text(word, start_x, start_y, canvas);
+			initText(temp);
+			texts.add(temp);
+			
+			//put a new line!
+			start_y += size;
+			
+			
+		}
+		//this.words = words;
 		//call break up string to make multiple text labels
 		
-		
+		/*
 		text = new Text(words, x, y, canvas);
 		
 		
@@ -75,7 +88,7 @@ public class TextItem extends ActiveObject {
 		
 		text.hide();
 		text.setFont(font);
-		
+		*/
 		
 		
 		
@@ -91,21 +104,31 @@ public class TextItem extends ActiveObject {
 	}
 	
 	
-	public TextItem(String words,String id, int size, int x, int y
-			, String font, DrawingCanvas canvas){
-		
-		
-		this(words, id, size, x, y, "NONE", 0, font, canvas);
-	}
-	
-	//no font entered
-	public TextItem(String words, String id, int size, int x, int y
+	//no font entered, multi-string. The descriptor.
+	public TextItem(String[] words, String id, int size, int x, int y
 			, DrawingCanvas canvas){
 		
 		
-		this(words, id, size, x, y, "NONE", 0, Font.MONOSPACED, canvas);
+		this(words, id, size, x, y, "NONE", 0, canvas);
 	}
 	
+	//single string ctor, no animations, no font
+	public TextItem(String word, String id, int size, int x, int y
+			, DrawingCanvas canvas){
+		
+		
+		//creates an array from single string
+		this( new String[]{word}, id, size, x, y, "NONE", 0, canvas);
+	}
+	
+	//animated, single string
+	public TextItem(String word, String id, int size, int x, int y,
+			String aniStyle, int aniSpeed, DrawingCanvas canvas){
+		
+		this( new String[]{word}, id, size, x, y, aniStyle, aniSpeed, canvas);
+		
+	}
+		
 	//Does all the style stuff to this piece of text
 	public void initText(Text text){
 		text.setColor(Color.BLACK);
@@ -156,12 +179,18 @@ public class TextItem extends ActiveObject {
 	}
 	
 	public void run(){
-	
+		//fade-in
+		
+		Color currCol;
+		int r; 
+		
+		for(Text text: texts){
+			
 			text.show();
 			//fades the text out before it disappears
-			Color currCol = text.getColor();
+			currCol = text.getColor();
 			
-			int r = currCol.getRed();
+			r = currCol.getRed();
 			while(r < 255){
 				
 				text.setColor(new Color(r, r, r));
@@ -171,6 +200,8 @@ public class TextItem extends ActiveObject {
 			}
 			
 			text.setColor(Color.WHITE);
+		}
+			
 		
 		//shake the text
 		while(shouldRun){
@@ -183,7 +214,11 @@ public class TextItem extends ActiveObject {
 				//move_dir_y *= -1;
 				move_dir_x *= movTot;
 				
-				text.move(move_dir_x, move_dir_y);
+				//move all the texts
+				for(Text text: texts){
+				
+					text.move(move_dir_x, move_dir_y);
+				}
 			}
 			
 			if(style.equals(fadingObject)){
@@ -195,27 +230,30 @@ public class TextItem extends ActiveObject {
 					colorChanger *= -1;
 				}		
 				
-				text.setColor(new Color(colorLevel, colorLevel, colorLevel));
+				for(Text text: texts){
+					text.setColor(new Color(colorLevel, colorLevel, colorLevel));
+				}
 				
 			}
 			
 			pause(PAUSE_TIME);
 			
 		}
-		
-		//fades the text out before it disappears
-		currCol = text.getColor();
-		
-		r = currCol.getRed();
-		while(r > 0){
+		for(Text text: texts){
+			//fades the text out before it disappears
+			currCol = text.getColor();
 			
-			text.setColor(new Color(r, r, r));
-			r -= 25;
-			pause(100); 
-
+			r = currCol.getRed();
+			while(r > 0){
+				//for(Text text: texts) {
+					text.setColor(new Color(r, r, r));
+					r -= 25;
+					pause(100); 
+				//}
+			}
+			
+			text.hide();
 		}
-		
-		text.hide();
 		
 		
 		
