@@ -172,7 +172,8 @@ public class TextItem extends ActiveObject {
 				
 				text.setColor(new Color(r, r, r));
 				r += 25;
-				pause(75); 
+				//pause(75); 
+				//TODO: testing purpose removes fade.
 
 			}
 			
