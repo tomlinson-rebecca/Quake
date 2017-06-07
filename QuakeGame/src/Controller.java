@@ -26,7 +26,7 @@ public class Controller extends WindowController
 	//keeps track of all objects on the screen. Will be used to clear them.
 	ArrayList<TextItem> displayedTexts = new ArrayList<TextItem>();
 	
-	public final static int WIDTH = 1000;
+	public final static int WIDTH = 1024;
 	public final static int HEIGHT = 600;
 	public final static int TITLE_OFFSET_X = 200;
 	public final static int TITLE_OFFSET_Y = 40;
@@ -51,7 +51,7 @@ public class Controller extends WindowController
 		
 		int welcomeSize = 200;
 		int medSize = 100;
-		TextItem welcome = new TextItem("QUAKE", "null", welcomeSize,
+		TextItem welcome = new TextItem("QUAKE", "NULL", welcomeSize,
 				TITLE_OFFSET_X,
 				TITLE_OFFSET_Y, 
 				"SHAKER", 150, 
@@ -59,11 +59,11 @@ public class Controller extends WindowController
 		
 		displayedTexts.add(welcome);
 		
-		TextItem threat = new TextItem("Can you survive a major earthquake?", "null", 32,
+		TextItem threat = new TextItem("Can you survive a major earthquake?", "NULL", 32,
 				190, 300, canvas);
 		displayedTexts.add(threat);
 
-		TextItem startMsg = new TextItem("Click any button to start.","null", 32, 275, 400,
+		TextItem startMsg = new TextItem("Click any button to start.","NULL", 32, 275, 400,
 				"FADER", 75 , canvas);
 		displayedTexts.add(startMsg);
 
@@ -118,8 +118,7 @@ public class Controller extends WindowController
 		//A naked level with no letters indicates a branch w/ no choices
 		int keyCode = arg0.getKeyCode();
 
-		String choice = "none";
-		
+		String choice = "NULL";
 		
 		try { 
 			
@@ -146,12 +145,12 @@ public class Controller extends WindowController
 				choice = storyManager.getLevel();
 				
 			//special case for the first screen
-			} else if(storyManager.getLevel().equals("1")){
-				choice = "1"; 
+			} else if(storyManager.getLevel().equals("start")){
+				choice = "_1"; 
 			}
 			
 			//if no valid button press has been made, don't do anything
-			if(!(choice.equals("none"))){
+			if(!(choice.equals("NULL")) && storyManager.isValidChoice(choice)){
 				//remove stuff
 				clearScreen();
 				System.out.println("displayText size "+ displayedTexts.size());
@@ -159,7 +158,7 @@ public class Controller extends WindowController
 				
 				
 				//time to show the next level
-				storyManager.incrementLevel();
+				//storyManager.incrementLevel();
 			}
 
 			

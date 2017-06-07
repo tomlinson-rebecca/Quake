@@ -27,13 +27,14 @@ public class TextItem extends ActiveObject {
 	//ids to determine the branch
 	
 	public int PAUSE_TIME = 250; //pause length in MS
-	
+	public int WORD_BUFFER = 10; //extra space between lines
 	double move_dir_x = 5; //move in a circle
 	double move_dir_y = 0;
 	double movTot = 1;
 	
 	int colorLevel = 255; //starts at white
 	int colorChanger = 10;
+	
 	
 	int size;
 	//Text text;
@@ -72,7 +73,7 @@ public class TextItem extends ActiveObject {
 			texts.add(temp);
 			
 			//put a new line!
-			start_y += size;
+			start_y += (size + WORD_BUFFER);
 			
 			
 		}
@@ -153,30 +154,6 @@ public class TextItem extends ActiveObject {
 		
 	}
 	
-	//breaks a string into multiple text labels on new lines of length maxWidth
-	public void breakText(String text, int maxWidth){
-		int lastSpace = 0;
-		String sub = text;
-		//find earliest space before it goes over, break it there
-		for(int i = 0; i < text.length(); i++){
-			char currChar = text.charAt(i);
-			
-			//we want to make a substring less than maxWidth
-			if(i % maxWidth <= 1){
-				//if this character is a space, save the index
-				if(currChar == ' '){
-					lastSpace = i;
-				}
-			} else {
-				//make a text label up until the last space
-				sub = sub.substring(lastSpace);
-				//i = lastSpace?
-				
-			}
-			
-		}
-		
-	}
 	
 	public void run(){
 		//fade-in
@@ -195,7 +172,7 @@ public class TextItem extends ActiveObject {
 				
 				text.setColor(new Color(r, r, r));
 				r += 25;
-				pause(100); 
+				pause(75); 
 
 			}
 			
@@ -239,19 +216,24 @@ public class TextItem extends ActiveObject {
 			pause(PAUSE_TIME);
 			
 		}
-		for(Text text: texts){
-			//fades the text out before it disappears
-			currCol = text.getColor();
+		
+		//fades the text out before it disappears
+		currCol = Color.WHITE;
+		
+		r = currCol.getRed();
+		while(r > 0){
 			
-			r = currCol.getRed();
-			while(r > 0){
-				//for(Text text: texts) {
-					text.setColor(new Color(r, r, r));
-					r -= 25;
-					pause(100); 
-				//}
+			for(Text text: texts) {
+				text.setColor(new Color(r, r, r));
 			}
 			
+			r -= 25;
+			pause(100); 
+		}
+		
+		
+		for(Text text: texts) {
+		//hide each text
 			text.hide();
 		}
 		
