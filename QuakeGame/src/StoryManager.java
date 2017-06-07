@@ -27,7 +27,16 @@ public class StoryManager {
 	 }
 	 //must use enums so switch-case-break works on string
 	 public enum ID{
-		 _1, _2A, NONE, NULL, start;
+		 
+		 NONE, 
+		 NULL, 
+		 start,
+		 _1, 
+		 _2A,
+		 _2B,
+		 _2C,
+		 _2D,
+		 _3A,
 	 }
 	 
 	 /**
@@ -68,8 +77,33 @@ public class StoryManager {
 					bigSize, 20, 400, canvas));
 			
 			break;
+		
+	
+		 case _2A: case _2C:
+		 
+			 texts.add(new TextItem(new String[]{"Well, good luck! Remember, C's get degrees! \n",
+					 "I should probably leave you alone so you can \n",
+					 "get back to work... see you around! "}, "_3A",
+						bigSize, 20, 20, canvas));
+		
+			break;
+		 case _2B:
+			texts.add(new TextItem(new String[]{"Isn't Ash Smith such a great professor?!! \n",
+					"Oh, and Christine is the best CAT 125 TA ever!! \n",
+					 "Well, I should probably leave you alone so you can \n",
+					 "get back to work... see you around! "}, "_3A",
+						bigSize, 20, 20, canvas));
+			 
+			break;
 			
-		 case _2A:
+		 case _2D:
+			texts.add(new TextItem(new String[]{"Wow, you big procrastinator. \n",
+					 "Well, I should probably leave you alone so you can \n",
+					 "get back to work... see you around! "}, "_3A",
+						bigSize, 20, 20, canvas));
+			 
+			break;
+		 case _3A:
 			 texts.add(new TextItem("You have chosen choice A!!", "null", 
 						bigSize, 20, 20, canvas));
 			 texts.add(new TextItem("A) Choice 1.", "_3A",
