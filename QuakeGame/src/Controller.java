@@ -142,7 +142,7 @@ public class Controller extends WindowController
 			//the case when there are no choices available
 			} else if(keyCode == KeyEvent.VK_ENTER &&
 					displayedTexts.size() <= 2){
-				choice = storyManager.getLevel();
+				choice = displayedTexts.get(displayedTexts.size()-1).getID();
 				
 			//special case for the first screen
 			} else if(storyManager.getLevel().equals("start")){
@@ -153,7 +153,7 @@ public class Controller extends WindowController
 			if(!(choice.equals("NULL")) && storyManager.isValidChoice(choice)){
 				//remove stuff
 				clearScreen();
-				System.out.println("displayText size "+ displayedTexts.size());
+				System.out.println("choice  "+ choice);
 				displayedTexts = storyManager.playStory(choice);
 				
 				
