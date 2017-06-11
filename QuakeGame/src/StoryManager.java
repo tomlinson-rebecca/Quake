@@ -1,7 +1,7 @@
 import java.util.ArrayList;
 
 import objectdraw.*;
-
+//TODO integrate different options based on location of kitchen or room
 /**
  * Will manager which level of the story we are on.
  * Like a branch that offers lesser branches. Should
@@ -19,10 +19,14 @@ public class StoryManager {
 	 String level = "start"; //the level of the game. Starts at start.
 	 boolean choseWindow = false;
 	 boolean choseCenter = false;
+	 boolean called = false;
+	 boolean inKitchen = false;
+	 boolean inRoom = false;
 	 String answer3A = "";
 	 String answer4 = "";
 	 String answer4cont = "";
 	 String answer9 = "";
+	 String cover = "cover";
 	 
 	 
 	 
@@ -47,7 +51,8 @@ public class StoryManager {
 		 _2C,
 		 _2D,
 		 _3A,
-		 _3B, _4A, _4B, _4C, _5A, _6A, _7A, _8A, _9A, _9B, _10A, _10B, _10C, _10D;
+		 _3B, _4A, _4B, _4C, _5A, _6A, _7A, _8A, _9A, _9B, _10A, _10B, _10C, _10D, _10E,
+		 _11A, _11B, _11C, _11D, _12A, _13A, _14A, _15A, _16A, _17A, _17B, _19A, _18A, _18B, _20A, _21A;
 	 }
 	 
 	 /**
@@ -233,6 +238,8 @@ public class StoryManager {
 						bigSize, 20, 400, "SHAKER", SHAKE_SPEED, canvas));
 			 texts.add(new TextItem("D)Crouch in the center of the room", "_10D",
 						bigSize, 20, 450, "SHAKER", SHAKE_SPEED, canvas));
+			 texts.add(new TextItem("E)Stop drop and roll!", "_10E",
+						bigSize, 20, 500, "SHAKER", SHAKE_SPEED, canvas));
 			 
 			break;
 			
@@ -244,12 +251,13 @@ public class StoryManager {
 					bigSize, 20, 20, "SHAKER", SHAKE_SPEED, canvas));
 			 texts.add(new TextItem("A)Cover your head and neck with your hands.", "_11A",
 						bigSize, 20, 300, "SHAKER", SHAKE_SPEED, canvas));
-			 texts.add(new TextItem("B)Stretch your legs out to get more room.", "_11B",
+			 texts.add(new TextItem("B)Scream for help and pound the wall.", "_11B",
 						bigSize, 20, 350, "SHAKER", SHAKE_SPEED, canvas));
 			 texts.add(new TextItem("C)Cover your eyes with your hands.", "_11C",
 						bigSize, 20, 400, "SHAKER", SHAKE_SPEED, canvas));
-			 texts.add(new TextItem("D)Scream for help and pound the wall.", "_11D",
+			 texts.add(new TextItem("D)Keep doing your homework.", "_11D",
 						bigSize, 20, 450, "SHAKER", SHAKE_SPEED, canvas));
+			 cover = "desk";
 			 break;
 			 
 		 case _10B:
@@ -273,6 +281,7 @@ public class StoryManager {
 			
 			 
 			 break;
+			 
 		 case _10C:
 			 texts.add(new TextItem(new String[]{"You hide under the bed.\n",
 					 "Luckily you just cleaned up under here, \n",
@@ -282,13 +291,15 @@ public class StoryManager {
 					bigSize, 20, 20, "SHAKER", SHAKE_SPEED, canvas));
 			 texts.add(new TextItem("A)Cover your head and neck with your hands.", "_11A",
 						bigSize, 20, 300, "SHAKER", SHAKE_SPEED, canvas));
-			 texts.add(new TextItem("B)Stretch your legs out to get more room.", "_11B",
+			 texts.add(new TextItem("B)Scream for help and pound the wall.", "_11B",
 						bigSize, 20, 350, "SHAKER", SHAKE_SPEED, canvas));
 			 texts.add(new TextItem("C)Cover your eyes with your hands.", "_11C",
 						bigSize, 20, 400, "SHAKER", SHAKE_SPEED, canvas));
-			 texts.add(new TextItem("D)Scream for help and pound the wall.", "_11D",
+			 texts.add(new TextItem("D)Keep doing your homework.", "_11D",
 						bigSize, 20, 450, "SHAKER", SHAKE_SPEED, canvas));
+			 cover = "bed";
 			 break;
+			 
 		 case _10D:
 			 choseCenter = true;
 			 texts.add(new TextItem(new String[]{"You curl up in a ball in the center of your room.\n",
@@ -309,9 +320,239 @@ public class StoryManager {
 							bigSize, 20, 450, "SHAKER", SHAKE_SPEED, canvas));
 			 }
 			 break;
-		 
 			 
+		 case _10E:
+			 texts.add(new TextItem("Ummmm that's for fires. Try again, sweetie :)", "NULL", 
+						bigSize, 20, 20, "SHAKER",SHAKE_SPEED, canvas));
+			 texts.add(new TextItem("A)Take cover under the desk", "_10A",
+						bigSize, 20, 300, "SHAKER", SHAKE_SPEED, canvas));
+			 texts.add(new TextItem("B)Hide near the window", "_10B",
+						bigSize, 20, 350, "SHAKER", SHAKE_SPEED, canvas));
+			 texts.add(new TextItem("C)Crawl under the bed", "_10C",
+						bigSize, 20, 400, "SHAKER", SHAKE_SPEED, canvas));
+			 texts.add(new TextItem("D)Crouch in the center of the room", "_10D",
+						bigSize, 20, 450, "SHAKER", SHAKE_SPEED, canvas));
+			 break;
+		 
+		 case _11A:
+			 texts.add(new TextItem(new String[]{"You protect your head and neck with your hands.\n",
+					 "A wise choice, clearly you paid attention \n",
+					 "during those silly earthquake drills in school.",
+					 "Protecting your brain from falling objects is the",
+					 "most important thing you can do!"
+					}, "NULL",
+					bigSize, 20, 20, "SHAKER", SHAKE_SPEED, canvas));
+			 texts.add(new TextItem("<Enter> Continue. ", "_12A",
+						bigSize, 350, 400, "FADER", 75, canvas));
+			 
+			 break;
+			 
+		 case _11B:
+			 texts.add(new TextItem(new String[]{"You scream with fear and desperation, hoping \n",
+					 "someone will hear you. Your cries fall on ears \n",
+					 "deafened by the monsterous earthquake that has",
+					 "just wrought itself upon the 23 million people ",
+					 "of Southern California.",
+					 "Hang in there, you're not alone."
+					}, "NULL",
+					bigSize, 20, 20, "SHAKER", SHAKE_SPEED, canvas));
+			 texts.add(new TextItem("<Enter> Continue. ", "_12A",
+						bigSize, 350, 400, "FADER", 75, canvas));
+			 break;
+			 
+		 case _11C:
+			 texts.add(new TextItem(new String[]{"You cover your eyes and try your hardest\n",
+					 "to find your happy place. Out of sight, out of mind, right...?",
+					 "Not quite, it's hard to ignore the violent shaking.",
+					 "You've never experienced\n a quake this strong before. ",
+					 "Hang in there."
+					}, "NULL",
+					bigSize, 20, 20, "SHAKER", SHAKE_SPEED, canvas));
+			 texts.add(new TextItem("<Enter> Continue. ", "_12A",
+						bigSize, 350, 400, "FADER", 75, canvas));
+			 
+			 break;
+			 
+		 case _11D:
+			 texts.add(new TextItem(new String[]{"Like the true UCSD student you are, \n",
+					 "you keep working amidst the quake. ",
+					 "Not like a giant earthquake is gonna stop you ",
+					 "from getting full credit, right?! ",
+					 "Though your handwriting is a little shakey."
+					}, "NULL",
+					bigSize, 20, 20, "SHAKER", SHAKE_SPEED, canvas));
+			 texts.add(new TextItem("<Enter> Continue. ", "_12A",
+						bigSize, 350, 400, "FADER", 75, canvas));
+			 
+			 break;
+			 
+		 case _12A:
+			 texts.add(new TextItem(new String[]{"The shaking continues for what seems like \n",
+					 "an eternity. Though in reality, it was only a couple",
+					 "of minutes, it's the longest wait in your life. ",
+					 "From under your "+cover+" you hear muffled sounds",
+					 "of rumbling and crashing from downstairs, in addition",
+					 "to the incessant roar of the quake."}
+					, "NULL",
+					bigSize, 20, 20, "SHAKER", SHAKE_SPEED, canvas));
+			 texts.add(new TextItem("<Enter> Continue. ", "_13A",
+						bigSize, 350, 400, "FADER", 75, canvas));
+			 break;
+		 case _13A:
+			 texts.add(new TextItem(new String[]{"And then..."}
+					, "NULL",
+					bigSize, 20, 20, "SHAKER", SHAKE_SPEED + 50, canvas));
+			 texts.add(new TextItem("<Enter> Continue. ", "_14A",
+						bigSize, 350, 400, "FADER", 75, canvas));
+			 break;
+			 
+		 case _14A:
+			 texts.add(new TextItem(new String[]{"Just like that..."}
+					, "NULL",
+					bigSize, 20, 20, "SHAKER", SHAKE_SPEED + 75, canvas));
+			 texts.add(new TextItem("<Enter> Continue. ", "_15A",
+						bigSize, 350, 400, "FADER", 75, canvas));
+			 break;
+		 case _15A:
+			 texts.add(new TextItem(new String[]{"The shaking stops."}
+					, "NULL",
+					bigSize, 20, 20, canvas));
+			 texts.add(new TextItem("<Enter> Continue. ", "_16A",
+						bigSize, 350, 400, "FADER", 75, canvas));
+			 break;
+			 
+		 case _16A:
+			 texts.add(new TextItem(new String[]{"...what do you do now?"}
+					, "NULL",
+					bigSize, 20, 20, canvas));
+			 texts.add(new TextItem("A) Venture out from under the "+cover+".", "_17A",
+						bigSize, 20, 250, canvas));
+			 texts.add(new TextItem("B) Stay here for a little bit...", "_17B",
+						bigSize, 20, 300, canvas));
 			
+			 break;
+			 
+		 case _17A:
+			 texts.add(new TextItem(new String[]{"You crawl out from under your "+cover,
+					 "and observe the cluttered mess that was once ",
+					 "your room. Dust and broken glass cover the floor," ,
+					 "and your possessions are strewn about. "}
+				, "NULL",
+				bigSize, 20, 20, canvas));
+			 texts.add(new TextItem("A) Look out the window.", "_18A",
+					bigSize, 20, 250, canvas));
+			 texts.add(new TextItem("B) Leave your room.", "_18B",
+					bigSize, 20, 300, canvas));
+			 break;
+			 
+		 case _17B:
+			 texts.add(new TextItem(new String[]{"That was terrifying, and you need a breather.",
+					 "You compose yourself for a couple minutes,",
+					 "trying to comprehend what just happened."}
+				, "NULL",
+				bigSize, 20, 20, canvas));
+			 texts.add(new TextItem("A) Venture out from under the "+cover+".", "_17A",
+						bigSize, 20, 250, canvas));
+			 texts.add(new TextItem("B) Stay here for a little while longer.", "_19A",
+						bigSize, 20, 300, canvas));
+			 break;
+		 case _19A:
+			 texts.add(new TextItem(new String[]{"You stay hidden even longer. Come on,",
+					 "chicken. Don't you wanna see all the destruction?",
+					 }
+				, "NULL",
+				bigSize, 20, 20, canvas));
+			 texts.add(new TextItem("A) Venture out from under the "+cover+".", "_17A",
+						bigSize, 20, 250, canvas));
+			 texts.add(new TextItem("B) Stay here for a little while longer.", "_19A",
+						bigSize, 20, 300, canvas));
+		
+			 break;
+			 
+		 case _18A:
+			 texts.add(new TextItem(new String[]{"You make your way over to the window, careful",
+					 "not to cut your feet on the broken glass and debris.",
+					 "The window has been broken, and you can see that",
+					 "your apartment wasn't the only one to take damage.",
+					 "Many of the Sixth apartments have broken windows and",
+					 "collapsed walls. Oh the humanity. "
+					 }
+				, "NULL",
+				bigSize, 20, 20, canvas));
+			 texts.add(new TextItem("A) Leave your room.", "_18B",
+						bigSize, 20, 350, canvas));
+			 
+			 break;
+			 
+		 case _18B:
+			 texts.add(new TextItem(new String[]{"You make your way over to the door.",
+					 "It creaks open, pushing aside quite a bit of rubble.",
+					 "Your breath is taken as you observe the damage.",
+					 "It seems like part of the ceiling collapsed into ",
+					 "the living room and blocked the only exit!",
+					 "It seems like you are trapped in your apartment."
+					 }
+				, "NULL",
+				bigSize, 20, 20, canvas));
+			 texts.add(new TextItem("A) Call for help.", "_20A",		//only use once
+						bigSize, 20, 300, canvas));
+			 texts.add(new TextItem("B) Examine your surroundings.", "_20B",	//should be available for all rooms
+						bigSize, 20, 350, canvas));
+			 texts.add(new TextItem("C) Go into the kitchen", "_20C",	//triggers food/water events
+						bigSize, 20, 400, canvas));
+			 texts.add(new TextItem("D) Go into your room", "_20D",		//triggers do homework/use computer event
+						bigSize, 20, 450, canvas));
+			 
+			 break;
+			 
+		 case _20A:
+			 called = true;
+			 texts.add(new TextItem(new String[]{"You scream as loud as you can, ",
+					 "hoping somebody will save you.",
+					 "You remember your roommates both ",
+					 "left for their final exam. ",
+					 "So you are home alone. Stuck. Home stuck.",
+					 }
+				, "NULL",
+				bigSize, 20, 20, canvas));
+			 texts.add(new TextItem("A) I meant like 'call' as in 'phone call', numbnuts.", "_21A",		//only use once
+						bigSize, 20, 300, canvas));
+			 
+			 break;
+			 
+		 case _21A:
+			 texts.add(new TextItem(new String[]{"O-oh right, of course, I knew that. ",
+					 "You dial 911, but are met with the dial tone.",
+					 "The line must be so busy with everyone else",
+					 "calling for help. ",
+					 "Yikes...",
+					 }
+				, "NULL",
+				bigSize, 20, 20, canvas));
+			 
+			 /*//give results based on room location for next thing to do.
+			 if(inKitchen){
+				 texts.add(new TextItem("A) Go into your room", "_20D",		//triggers do homework/use computer event
+							bigSize, 20, 450, canvas));
+				 texts.add(new TextItem("B) Examine your surroundings.", "_20BKitchen",	//should be available for all rooms
+							bigSize, 20, 350, canvas));
+			 } else if(inRoom){
+				 texts.add(new TextItem("A) Go into the kitchen", "_20D",		//triggers do homework/use computer event
+							bigSize, 20, 450, canvas));
+				 texts.add(new TextItem("B) Examine your surroundings.", "_20BKitchen",	//should be available for all rooms
+							bigSize, 20, 350, canvas));
+			 }
+			 
+			 texts.add(new TextItem("C) Go into the kitchen", "_20C",	//triggers food/water events
+						bigSize, 20, 400, canvas));
+						*/
+			 
+			 
+			 
+			 
+			 break;
+			 
+		//this line is only reached if a break has been forgotten
 		 case tests:
 			 texts.add(new TextItem("You have chosen choice A!!", "NULL", 
 						bigSize, 20, 20, canvas));

@@ -66,6 +66,9 @@ public class Controller extends WindowController
 		TextItem startMsg = new TextItem("Click any button to start.","NULL", 32, 275, 400,
 				"FADER", 75 , canvas);
 		displayedTexts.add(startMsg);
+		TextItem author = new TextItem("Made by Rebecca Tomlinson for CAT 125","NULL", 16, 650, 575,
+				canvas);
+		displayedTexts.add(author);
 
 		//init story manager
 		storyManager = new StoryManager(canvas);
@@ -138,6 +141,9 @@ public class Controller extends WindowController
 			} else if(keyCode == KeyEvent.VK_D){
 				//get the id from here
 				choice = displayedTexts.get(4).getID(); 
+			} else if(keyCode == KeyEvent.VK_E){
+				//get the id from here
+				choice = displayedTexts.get(5).getID(); 
 				
 			//the case when there are no choices available
 			} else if(keyCode == KeyEvent.VK_ENTER &&
