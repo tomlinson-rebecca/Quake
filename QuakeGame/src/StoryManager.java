@@ -73,7 +73,7 @@ public class StoryManager {
 		 _11A, _11B, _11C, _11D, _12A, _13A, _14A, _15A, _16A, _17A, _17B, _19A, _18A, _18B,
 		 _20A, _21A, _22A, exHall, exKitchen, exRoom, gotoKitchen, gotoRoom, kitchenScenarios, roomScenarios, 
 		 eat, drink, noodles, cereal, melon, cheese, _24A, stoveFood, _24B, death1, _25A, _25B,
-		 waterHunt, tank, toilet, fridge, _26A, _26B, _26C, _26D, _26E;
+		 waterHunt, tank, toilet, fridge, _26A, _26B, _26C, _26D, _26E, window1, window1A, window1B, death2, computer;
 	 }
 	 
 	 /**
@@ -608,9 +608,23 @@ public class StoryManager {
 			
 			 break;
 			 
-		 case exKitchen:
-			 
 		 case exRoom:
+			 texts.add(new TextItem(new String[]{"You room is a mess.",
+					 "Most of your possessions lay strewn across",
+					 "the floor. Your shelf has collapsed, leaving",
+					 "books and knicknacks all over the place. ",
+					 "The windows have shattered, leaving broken glass",
+					 "on the floor. ",
+					 
+			 }
+				, "NULL",
+				bigSize, 20, 20, canvas)); 
+			 
+			 texts.add(new TextItem("<Enter> Continue. ", ROOM_SCENARIOS,
+						bigSize, 350, 400, "FADER", 75, canvas));
+			 
+			 break;
+		 case exKitchen:
 			 texts.add(new TextItem(new String[]{"The earthquake has knocked many",
 					 "dishes onto the floor, leaving shards of",
 					 "ceramic and glass on the floor. ",
@@ -658,7 +672,7 @@ public class StoryManager {
 						bigSize, 20, 400, canvas));
 			 texts.add(new TextItem("C) Examine surroundings", EX_KITCHEN,
 						bigSize, 20, 450, canvas));
-			 texts.add(new TextItem("D) Go into your room", "GOTO_ROOM",	//triggers food/water events
+			 texts.add(new TextItem("D) Go into your room", GOTO_ROOM,	//triggers food/water events
 						bigSize, 20, 500, canvas));	 
 			 
 			 if(!called){
@@ -667,12 +681,115 @@ public class StoryManager {
 			 }
 			 
 			 break;
-		 case roomScenarios:
 			 
 		 case gotoRoom:
 			 inKitchen = false;
 			 inRoom = true;
+			 texts.add(new TextItem(new String[]{"You head back into your room.",
+					 "It's a mess. I mean, more of a mess than usual.",
+					 "Whelp, at least the ceiling is intact. ",
+					 "The living room suffered much worse of a fate.",
+					 "I hope HDH doesn't charge you for this mess..."}
+				, "NULL",
+				bigSize, 20, 20, canvas));
 			 
+			 texts.add(new TextItem("<Enter> Continue. ",ROOM_SCENARIOS,
+						bigSize, 350, 400, "FADER", 75, canvas));
+			 
+			 break;
+		 case roomScenarios:
+			 texts.add(new TextItem(new String[]{"What will you do now?"}
+				, "NULL",
+				bigSize, 20, 20, canvas));
+			 texts.add(new TextItem("A) Look out the window", "window1",
+						bigSize, 20, 250, canvas));
+			 texts.add(new TextItem("B) Do your homework...", "homework",
+						bigSize, 20, 300, canvas));
+			 texts.add(new TextItem("C) Use the computer", "computer",
+						bigSize, 20, 350, canvas));
+			 texts.add(new TextItem("D) Examine surroundings", EX_ROOM,
+						bigSize, 20, 400, canvas));
+			 texts.add(new TextItem("E) Go to the kitchen.", GOTO_KITCHEN,	//triggers food/water events
+						bigSize, 20, 450, canvas));	 
+			 
+			 if(!called){
+				 texts.add(new TextItem("F) Call for help.", "_20A",
+							bigSize, 20, 500, canvas));
+			 }
+			 
+			 break;
+			 
+		 case computer:
+			 texts.add(new TextItem(new String[]{"You were so proud of your awesome",
+					 "gaming desktop. Well now the power is out,",
+					 "and your computer doesn't work.",
+					 "Shiiiiiiieeeeet."}
+				, "NULL",
+				bigSize, 20, 20, canvas));
+			 texts.add(new TextItem("<Enter> Continue. ",ROOM_SCENARIOS,
+						bigSize, 350, 400, "FADER", 75, canvas));
+			 break;
+			 
+			 
+			 //look out window, can climb out but die
+		 case window1:
+			 texts.add(new TextItem(new String[]{"You make your way over to the window, careful",
+					 "not to cut your feet on the broken glass and debris.",
+					 "The window has been broken, and you can see that",
+					 "your apartment wasn't the only one to take damage.",
+					 "Many of the Sixth apartments have broken windows and",
+					 "collapsed walls. Oh the humanity. "
+					 }
+				, "NULL",
+				bigSize, 20, 20, canvas));
+			 
+			 texts.add(new TextItem("A) Wow that sucks. ", ROOM_SCENARIOS,
+						bigSize, 20, 350, canvas));
+			 texts.add(new TextItem("B) Try to escape through the window. ", "window1A",
+						bigSize, 20, 400, canvas));
+			 
+			 break;
+			 
+		 case window1A:
+			 texts.add(new TextItem(new String[]{"The glass has been broken, so maybe",
+					 "it would be possible to climb out the window.",
+					 "You seat yourself on the windowsill and look down.",
+					 "WOW that's a big drop...",
+					 "It's three stories high, ",
+					 "and the landing doesn't look soft.",
+					 }
+				, "NULL",
+				bigSize, 20, 20, canvas));
+			 
+			 texts.add(new TextItem("A) Too scary for me. I'll try something else.", ROOM_SCENARIOS,
+						bigSize, 20, 350, canvas));
+			 texts.add(new TextItem("B) Jump out the window. ", "window1B",
+						bigSize, 20, 400, canvas));
+			 
+			 break;
+			 
+		 case window1B:
+			 texts.add(new TextItem(new String[]{"You sure you want to jump out?",
+					 "That's quite a drop...",
+					 "I don't know if you'll make it.",
+					 }
+				, "NULL",
+				bigSize, 20, 20, canvas));
+			 texts.add(new TextItem("A) Yeah okay I don't want to die heh...", ROOM_SCENARIOS,
+						bigSize, 20, 350, canvas));
+			 texts.add(new TextItem("B) I don't care, let me out of here! ", "death2",
+						bigSize, 20, 400, canvas));
+			 break;
+			 
+			 //TODO connect w/ death
+		 case death2:
+			 texts.add(new TextItem(new String[]{"You jump out the window.",
+					 "And fall to your doom.",
+					 "CRUNCH!",
+					 }
+				, "NULL",
+				bigSize, 20, 20, canvas));
+			 break;
 			 
 		 case eat:
 			 texts.add(new TextItem(new String[]{"All that earthquaking sure made",

@@ -145,6 +145,10 @@ public class Controller extends WindowController
 				//get the id from here
 				choice = displayedTexts.get(5).getID(); 
 				
+			} else if(keyCode == KeyEvent.VK_F){
+				//get the id from here
+				choice = displayedTexts.get(6).getID(); 
+				
 			//the case when there are no choices available
 			} else if(keyCode == KeyEvent.VK_ENTER &&
 					displayedTexts.size() <= 2){
