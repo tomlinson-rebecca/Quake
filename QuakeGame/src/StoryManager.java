@@ -1,7 +1,7 @@
 import java.util.ArrayList;
 
 import objectdraw.*;
-//TODO integrate different options based on location of kitchen or room
+//TODO integrate different 
 /**
  * Will manager which level of the story we are on.
  * Like a branch that offers lesser branches. Should
@@ -13,6 +13,16 @@ import objectdraw.*;
  */
 public class StoryManager {
 	 public static final int SHAKE_SPEED = 100;
+	 public static final String GOTO_KITCHEN = "gotoKitchen";
+	 public static final String GOTO_ROOM = "gotoRoom";
+	 public static final String EX_HALL = "exHall";
+	 public static final String EX_KITCHEN = "exKitchen";
+	 public static final String EX_ROOM = "exRoom";
+	 public static final String KITCHEN_SCENARIOS = "kitchenScenarios";
+	 public static final String ROOM_SCENARIOS = "roomScenarios";
+
+
+	 
 	 DrawingCanvas canvas;
 	 int bigSize = 32; //for story details
 	 int lvl = 1; 
@@ -22,11 +32,19 @@ public class StoryManager {
 	 boolean called = false;
 	 boolean inKitchen = false;
 	 boolean inRoom = false;
+	 boolean sink = false;
+	 boolean bottle = false;
+	 
+	 boolean tank = false;
+	 boolean toilet = false;
+	 boolean fridge = false;
+	 
 	 String answer3A = "";
 	 String answer4 = "";
 	 String answer4cont = "";
 	 String answer9 = "";
 	 String cover = "cover";
+	 String stoveFood = "food";
 	 
 	 
 	 
@@ -52,7 +70,10 @@ public class StoryManager {
 		 _2D,
 		 _3A,
 		 _3B, _4A, _4B, _4C, _5A, _6A, _7A, _8A, _9A, _9B, _10A, _10B, _10C, _10D, _10E,
-		 _11A, _11B, _11C, _11D, _12A, _13A, _14A, _15A, _16A, _17A, _17B, _19A, _18A, _18B, _20A, _21A;
+		 _11A, _11B, _11C, _11D, _12A, _13A, _14A, _15A, _16A, _17A, _17B, _19A, _18A, _18B,
+		 _20A, _21A, _22A, exHall, exKitchen, exRoom, gotoKitchen, gotoRoom, kitchenScenarios, roomScenarios, 
+		 eat, drink, noodles, cereal, melon, cheese, _24A, stoveFood, _24B, death1, _25A, _25B,
+		 waterHunt, tank, toilet, fridge, _26A, _26B, _26C, _26D, _26E;
 	 }
 	 
 	 /**
@@ -496,14 +517,16 @@ public class StoryManager {
 				bigSize, 20, 20, canvas));
 			 texts.add(new TextItem("A) Call for help.", "_20A",		//only use once
 						bigSize, 20, 300, canvas));
-			 texts.add(new TextItem("B) Examine your surroundings.", "_20B",	//should be available for all rooms
+			 texts.add(new TextItem("B) Examine your surroundings.", EX_HALL,	//should be available for all rooms
 						bigSize, 20, 350, canvas));
-			 texts.add(new TextItem("C) Go into the kitchen", "_20C",	//triggers food/water events
+			 texts.add(new TextItem("C) Go into the kitchen", GOTO_KITCHEN,	//triggers food/water events
 						bigSize, 20, 400, canvas));
-			 texts.add(new TextItem("D) Go into your room", "_20D",		//triggers do homework/use computer event
+			 texts.add(new TextItem("D) Go into your room", GOTO_ROOM,		//triggers do homework/use computer event
 						bigSize, 20, 450, canvas));
 			 
 			 break;
+			 
+		
 			 
 		 case _20A:
 			 called = true;
@@ -530,31 +553,419 @@ public class StoryManager {
 				, "NULL",
 				bigSize, 20, 20, canvas));
 			 
-			 /*//give results based on room location for next thing to do.
+			 String id = "_22A";
+			 
 			 if(inKitchen){
-				 texts.add(new TextItem("A) Go into your room", "_20D",		//triggers do homework/use computer event
-							bigSize, 20, 450, canvas));
-				 texts.add(new TextItem("B) Examine your surroundings.", "_20BKitchen",	//should be available for all rooms
-							bigSize, 20, 350, canvas));
-			 } else if(inRoom){
-				 texts.add(new TextItem("A) Go into the kitchen", "_20D",		//triggers do homework/use computer event
-							bigSize, 20, 450, canvas));
-				 texts.add(new TextItem("B) Examine your surroundings.", "_20BKitchen",	//should be available for all rooms
-							bigSize, 20, 350, canvas));
+				id = KITCHEN_SCENARIOS;
+				 
+			 } else if (inRoom){
+				 id = ROOM_SCENARIOS;
 			 }
-			 
-			 texts.add(new TextItem("C) Go into the kitchen", "_20C",	//triggers food/water events
-						bigSize, 20, 400, canvas));
-						*/
-			 
-			 
+			 texts.add(new TextItem("<Enter> Continue. ", id,
+						bigSize, 350, 400, "FADER", 75, canvas));
 			 
 			 
 			 break;
 			 
+		//maybe a central case? Happens after phone call.
+		 case _22A:
+			 texts.add(new TextItem(new String[]{"What will you do now?"}
+				, "NULL",
+				bigSize, 20, 20, canvas));
+		
+			
+				 texts.add(new TextItem("A) Go into the kitchen", GOTO_KITCHEN,	//triggers food/water events
+							bigSize, 20, 300, canvas));
+				 texts.add(new TextItem("B) Go into your room", GOTO_ROOM,	//triggers food/water events
+							bigSize, 20, 350, canvas));	 
+				 texts.add(new TextItem("C) Examine your surroundings", EX_HALL,		//only use once
+							bigSize, 20, 400, canvas));
+				 
+			 
+			 if(!called){
+				 texts.add(new TextItem("D) Call for help.", "_20A",		//only use once
+							bigSize, 20, 450, canvas));
+			 }
+			 
+			
+			 
+			 
+			 break;
+			 
+			 //examining hall case
+		 case exHall:
+			 texts.add(new TextItem(new String[]{"You look around at what used to be your",
+					 "living room. Part of the ceiling has collapsed,",
+					 "leaving the room strewn with dust and debris.",
+					 "Thank god you didn't decide to study on the couch...",
+					 "The front door is blocked, leaving you trapped."
+			 }
+				, "NULL",
+				bigSize, 20, 20, canvas));
+			 
+			 texts.add(new TextItem("<Enter> Continue. ", "_22A",
+						bigSize, 350, 400, "FADER", 75, canvas));
+			
+			 break;
+			 
+		 case exKitchen:
+			 
+		 case exRoom:
+			 texts.add(new TextItem(new String[]{"The earthquake has knocked many",
+					 "dishes onto the floor, leaving shards of",
+					 "ceramic and glass on the floor. ",
+					 "The fridge and stove are still upright, ",
+					 "though you can't hear the fridge running.",
+					 "Maybe the power is out.",
+					 
+			 }
+				, "NULL",
+				bigSize, 20, 20, canvas)); 
+			 
+			 texts.add(new TextItem("<Enter> Continue. ", KITCHEN_SCENARIOS,
+						bigSize, 350, 400, "FADER", 75, canvas));
+			
+			 break;
+			 
+		 case gotoKitchen:
+			 
+			 inKitchen = true;
+			 inRoom = false;
+			 texts.add(new TextItem(new String[]{"You decide to head into the kitchen.",
+					 "Many of your roommate's dishes have falled off",
+					 "the counter and shattered on the ground. Well, ",
+					 "that's what they get for not putting away ",
+					 "their dishes. Aside from the mess,",
+					 "your fridge and stove seem intact.",
+					 
+			 }
+				, "NULL",
+				bigSize, 20, 20, canvas));
+			 
+			 texts.add(new TextItem("<Enter> Continue. ", KITCHEN_SCENARIOS,
+						bigSize, 350, 400, "FADER", 75, canvas));
+			
+			 break;
+			 
+			 //stuff you can do in kitchen
+		 case kitchenScenarios:
+			 texts.add(new TextItem(new String[]{"What will you do now?"}
+				, "NULL",
+				bigSize, 20, 20, canvas));
+			 texts.add(new TextItem("A) Make myself a snack.", "eat",
+						bigSize, 20, 350, canvas));
+			 texts.add(new TextItem("B) Get myself a drink.", "drink",
+						bigSize, 20, 400, canvas));
+			 texts.add(new TextItem("C) Examine surroundings", EX_KITCHEN,
+						bigSize, 20, 450, canvas));
+			 texts.add(new TextItem("D) Go into your room", "GOTO_ROOM",	//triggers food/water events
+						bigSize, 20, 500, canvas));	 
+			 
+			 if(!called){
+				 texts.add(new TextItem("E) Call for help.", "_20A",
+							bigSize, 20, 550, canvas));
+			 }
+			 
+			 break;
+		 case roomScenarios:
+			 
+		 case gotoRoom:
+			 inKitchen = false;
+			 inRoom = true;
+			 
+			 
+		 case eat:
+			 texts.add(new TextItem(new String[]{"All that earthquaking sure made",
+					 "you hungry! If you're trapped in here,",
+					 "might as well eat something. ",
+					 "What do you want to eat?",
+			 }
+				, "NULL",
+				bigSize, 20, 20, canvas));
+			 
+			 texts.add(new TextItem("A) Ramen noodles!", "noodles",
+						bigSize, 20, 250, canvas));
+			 texts.add(new TextItem("B) Bowl of cereal.", "cereal",
+						bigSize, 20, 300, canvas));
+			 texts.add(new TextItem("C) WATERMELON!", "melon",
+						bigSize, 20, 350, canvas));
+			 texts.add(new TextItem("D) Grilled cheese sandwich.", "cheese",
+						bigSize, 20, 400, canvas));
+			 break;
+			 
+		 case noodles:
+			 texts.add(new TextItem(new String[]{"You fill a pot with water ",
+					 "and prepare to boil it on the stove.",
+					 "WAIT!!!",
+					 "Don't turn on the stove, the gas line might",
+					 "have been broken, so turning it on could cause",
+					 "a HUGE explosion!!"
+			 }, "NULL",
+						bigSize, 20, 20, canvas));	 
+			 
+			 texts.add(new TextItem("A) Okay fine. I can eat something else.", "eat",
+						bigSize, 20, 300, canvas));
+			 texts.add(new TextItem("B) Do it anyway.", "_24A",
+						bigSize, 20, 350, canvas));
+			 
+			 break;
+			 
+			 //noodle death
+		 case _24A:
+			 texts.add(new TextItem(new String[]{"You sure...?",
+					 "Doesn't seem safe...",
+			 }, "NULL",
+						bigSize, 20, 20, canvas));	
+			 
+			 texts.add(new TextItem("A) Yeah you're right, I don't want to die.", "eat",
+						bigSize, 20, 300, canvas));
+			 texts.add(new TextItem("B) I WANT MY NOODLES!!", "death1",
+						bigSize, 20, 350, canvas));
+			 break;
+			 
+			 //grilled cheese death
+		 case _24B:
+			 texts.add(new TextItem(new String[]{"You sure...?",
+					 "Doesn't seem safe...",
+			 }, "NULL",
+						bigSize, 20, 20, canvas));	
+			 
+			 texts.add(new TextItem("A) Yeah you're right, I don't want to die.", "eat",
+						bigSize, 20, 300, canvas));
+			 texts.add(new TextItem("B) I WANT MY GRILLED CHEEEEEEESE!!", "death1",
+						bigSize, 20, 350, canvas));
+			 break;
+			 
+		 case cereal:
+			 texts.add(new TextItem(new String[]{"You pick your favorite cereal",
+					 "box off the floor and open the fridge",
+					 "to get milk. Yep, the power is definitely out.",
+					 "That was a bad quake. Hopefully your food ",
+					 "doesn't spoil. After eating cereal you feel better.",
+					 
+			 }, "NULL",
+						bigSize, 20, 20, canvas));	
+			 
+			 texts.add(new TextItem("<Enter> Continue. ", KITCHEN_SCENARIOS,
+						bigSize, 350, 400, "FADER", 75, canvas));
+			 break;
+			 
+		 case melon:
+			 texts.add(new TextItem(new String[]{"You grab a large watermelon",
+					 "from the fridge. Yep, the power is definitely out.",
+					 "That was a bad quake. Hopefully your food ",
+					 "doesn't spoil. You slice the watermelon and",
+					 "eat it. Mmm delicious!"
+					 
+			 }, "NULL",
+						bigSize, 20, 20, canvas));	
+			 
+			 texts.add(new TextItem("<Enter> Continue. ", KITCHEN_SCENARIOS,
+						bigSize, 350, 400, "FADER", 75, canvas));
+			 break;
+		 case cheese:
+			 texts.add(new TextItem(new String[]{"You get bread and a pan",
+					 "and place it on the stove",
+					 "WAIT!!!",
+					 "Don't turn on the stove, the gas line might",
+					 "have been broken, so turning it on could cause",
+					 "a HUGE explosion!!"
+			 }, "NULL",
+						bigSize, 20, 20, canvas));	 
+			 
+			 texts.add(new TextItem("A) Okay fine. I can eat something else.", "eat",
+						bigSize, 20, 300, canvas));
+			 texts.add(new TextItem("B) Do it anyway.", "_24B",
+						bigSize, 20, 350, canvas));
+			 
+			 break;
+			 
+			 
+		 case drink:
+			 texts.add(new TextItem(new String[]{"Through all the panic, you",
+					 "haven't even noticed how hot and sweaty ",
+					 "you are. And thirsty. So thirsty...",
+					 "Let's get some water!",
+			 }, "NULL",
+						bigSize, 20, 20, canvas));
+			 
+			 texts.add(new TextItem("A) Look for a water bottle", "_25A",
+						bigSize, 20, 250, canvas));
+			 texts.add(new TextItem("B) Get some gross sink water.", "_25B",
+						bigSize, 20, 300, canvas));
+			 
+			 break;
+			 
+		 case _25A:
+			 bottle = true;
+			 texts.add(new TextItem(new String[]{"You search all over your apartment,",
+					 "and eventually find a single bottle. ",
+					 "It only has a little water left, which you",
+					 "quickly gulp down. You need more water!",
+			 }, "NULL",
+						bigSize, 20, 20, canvas));
+			 
+			 if(!sink){
+				 texts.add(new TextItem("A) Try the sink.", "_25B",
+							bigSize, 20, 300, canvas));
+			 } else {
+				 texts.add(new TextItem("<Enter> Continue. ", "waterHunt",
+							bigSize, 350, 400, "FADER", 75, canvas));
+			 }
+			 break;
+			 
+		 case _25B:
+			 sink = true;
+			 texts.add(new TextItem(new String[]{"You try to get some water from the faucet.",
+					 "Unfortunately no water comes out. ",
+					 "The pipes must have broken in the quake...",
+					 "You need water!",
+			 }, "NULL",
+						bigSize, 20, 20, canvas));
+			 if(!bottle){
+				 texts.add(new TextItem("A) Look for a water bottle.", "_25A",
+							bigSize, 20, 300, canvas));
+			 } else {
+				 texts.add(new TextItem("<Enter> Continue. ", "waterHunt",
+							bigSize, 350, 400, "FADER", 75, canvas));
+			 }
+			 break;
+			 
+			 
+		 case waterHunt:
+			 texts.add(new TextItem(new String[]{"Hmmm... where can you find drinkable water",
+					 "in your apartment? You wrack your brain ",
+					 "and come up with several possible water sources.",
+			 }, "NULL",
+						bigSize, 20, 20, canvas));
+		
+
+			 texts.add(new TextItem("A)The toilet has water in it!!", "toilet",
+						bigSize, 20, 250, canvas));
+			 texts.add(new TextItem("B)There's gotta be something drinkable in the fridge.", "fridge",
+						bigSize, 20, 300, canvas));
+			 texts.add(new TextItem("C)My roommate's fish tank...", "tank",
+						bigSize, 20, 350, canvas));
+			 break;
+		
+			 //can't drink tank. can drink other two.
+		 case tank:	 
+			 tank = true;
+			 texts.add(new TextItem(new String[]{"You creep into your roommate's room,",
+					 "which is unlocked as usual. Despite the recent ",
+					 "quake, their fish tank is completely intact.",
+					 "This fish is the luckiest fish on earth...",
+					 "until you came to drink his water."
+			 }, "NULL",
+						bigSize, 20, 20, canvas));
+			 texts.add(new TextItem("A) Drink fishtank water!", "_26A",
+						bigSize, 20, 250, canvas));
+			 
+			 break;
+			 
+		 case _26A:
+			 texts.add(new TextItem(new String[]{"Whoa hold on hold on!,",
+					 "That is not sanitary! You could get",
+					 "some wicked parasites or bacteria in your gut,",
+					 "and have miserable diarrhea!",
+					 "Plus, ummm, rude much? Did you even ask",
+					 "the fish for his permisson??",
+					 "You should find another water source."
+			 }, "NULL",
+						bigSize, 20, 20, canvas));
+			 texts.add(new TextItem("<Enter> Continue. ", "waterHunt",
+						bigSize, 350, 400, "FADER", 75, canvas));
+			 break;
+			 
+		 case toilet:
+			 toilet = true;
+			 texts.add(new TextItem(new String[]{"You head into the nearest bathroom.",
+					 "The quake left this room mostly intact.",
+					 "You are greeted by the porceline thrown,",
+					 "filled with possibly the last water in",
+					 "the apartment. Do you dare drink from it?",	 
+					 
+			 }, "NULL",
+						bigSize, 20, 20, canvas));
+			 texts.add(new TextItem("A) Yes. Bring on the toilet water.", "_26B",
+						bigSize, 20, 250, canvas));
+			 texts.add(new TextItem("B) Ewww no way, I'll find water somewhere else.", "waterHunt",
+						bigSize, 20, 300, canvas));
+			 break;
+			 
+		 case _26B:
+			 texts.add(new TextItem(new String[]{"Well I have some good news for you.",
+					 "Did you know the water in the tank of the toilet,",
+					 "you know, the big back part, is completely",
+					 "sanitary to drink?",
+			 }, "NULL",
+						bigSize, 20, 20, canvas));
+			 texts.add(new TextItem("A) Oh awesome I don't have to drink poo water", "_26C",
+						bigSize, 20, 250, canvas));
+			 break;
+			 
+		 case _26C:
+			 texts.add(new TextItem(new String[]{"That's right!",
+					 "And so you quench your thirst with the",
+					 "totally clean not-poo water. Ahhh, refreshing!",
+					 "You return to the kitchen."
+			 }, "NULL",
+						bigSize, 20, 20, canvas));
+			 
+			 texts.add(new TextItem("<Enter> Continue. ", KITCHEN_SCENARIOS,
+						bigSize, 350, 400, "FADER", 75, canvas));
+			 
+			 break;
+			 
+			 
+		 case fridge:
+			 fridge = true;
+			 texts.add(new TextItem(new String[]{"You scout out the fridge for any",
+					 "drinkable substances. Unfortunately,",
+					 "your roommate's super stoned friends came over",
+					 "and drank ALL the soda! There's NOTHING to drink in",
+					 "the fridge... but what about the freezer?"
+			 }, "NULL",
+						bigSize, 20, 20, canvas));
+			 
+			 texts.add(new TextItem("A) What about the freezer?", "_26D",
+						bigSize, 20, 250, canvas));
+			 texts.add(new TextItem("B) Oh yeah the freezer hahahah totally.", "_26D",
+						bigSize, 20, 300, canvas));
+			 texts.add(new TextItem("C) What will I drink melted ice cream?", "_26D",
+						bigSize, 20, 350, canvas));
+			 
+			 break;
+			 
+		 case _26D:
+			 texts.add(new TextItem(new String[]{"With the power outage, the freezer can't",
+					 "remain cool. What once was ice, must now be...",
+			 }, "NULL",
+						bigSize, 20, 20, canvas));
+			 texts.add(new TextItem("A) Ohh, I get it now. ","26E",
+						bigSize, 20, 250, canvas));
+			 texts.add(new TextItem("B) Wtf I am not a chemistry major explain pls", "_26E",
+						bigSize, 20, 300, canvas));
+			 texts.add(new TextItem("C) Ice cream!", "_26E",
+						bigSize, 20, 350, canvas));
+			 break;
+			 
+		 case _26E:
+			 texts.add(new TextItem(new String[]{"The ice cubes in the freezer have melted",
+					 "into trays of sanitary, drinkable water!",
+					 "You drink carefully, making sure not to spill.",
+					 "Ahhhh, your thirst is quenched!"
+			 }, "NULL",
+						bigSize, 20, 20, canvas));
+			 texts.add(new TextItem("<Enter> Continue. ", KITCHEN_SCENARIOS,
+						bigSize, 350, 400, "FADER", 75, canvas));
+			 
+			 break;
+			 
+			 
 		//this line is only reached if a break has been forgotten
 		 case tests:
-			 texts.add(new TextItem("You have chosen choice A!!", "NULL", 
+			 texts.add(new TextItem("You have chosen choice A!! AND FORGOTTEN A BREAKPOINT", "NULL", 
 						bigSize, 20, 20, canvas));
 			 texts.add(new TextItem("A) Choice 1.", "_3A",
 						bigSize, 20, 250, canvas));
@@ -565,10 +976,13 @@ public class StoryManager {
 			 texts.add(new TextItem("D) Choice 4.", "_3D",
 						bigSize, 20, 400, canvas));
 		 
-		 
-			
+		 case death1:
+						 //TODO
+
 		 }
 		
+		 
+		 
 		 return texts;	
 	 }
 	 
